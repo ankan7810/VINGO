@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useState } from 'react'
+import  { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { serverUrl } from '../App'
 
@@ -70,6 +70,10 @@ function UserOrderCard({ data }) {
                         ))}
                     </div>
                     <div className='flex justify-between items-center border-t pt-2'>
+
+
+                        {/* very very important section for delivery boy's income */}
+
                         <p className='font-semibold'>Subtotal: {shopOrder.subtotal}</p>
                         <span className='text-sm font-medium text-blue-600'>{shopOrder.status}</span>
                     </div>
@@ -80,9 +84,6 @@ function UserOrderCard({ data }) {
                 <p className='font-semibold'>Total: ₹{data.totalAmount}</p>
                 <button className='bg-[#ff4d2d] hover:bg-[#e64526] text-white px-4 py-2 rounded-lg text-sm' onClick={() => navigate(`/track-order/${data._id}`)}>Track Order</button>
             </div>
-
-
-
         </div>
     )
 }

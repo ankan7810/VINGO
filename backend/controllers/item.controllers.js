@@ -2,6 +2,7 @@ import Item from "../models/item.model.js";
 import Shop from "../models/shop.model.js";
 import uploadOnCloudinary from "../utils/cloudinary.js";
 
+
 export const addItem = async (req, res) => {
     try {
         const { name, category, foodType, price } = req.body
@@ -31,6 +32,7 @@ export const addItem = async (req, res) => {
     }
 }
 
+
 export const editItem = async (req, res) => {
     try {
         const itemId = req.params.itemId
@@ -55,6 +57,7 @@ export const editItem = async (req, res) => {
         return res.status(500).json({ message: `edit item error ${error}` })
     }
 }
+
 
 export const getItemById = async (req, res) => {
     try {
@@ -90,6 +93,7 @@ export const deleteItem = async (req, res) => {
     }
 }
 
+
 export const getItemByCity = async (req, res) => {
     try {
         const { city } = req.params
@@ -112,6 +116,7 @@ export const getItemByCity = async (req, res) => {
     }
 }
 
+
 export const getItemsByShop=async (req,res) => {
     try {
         const {shopId}=req.params
@@ -127,6 +132,7 @@ export const getItemsByShop=async (req,res) => {
     }
 }
 
+
 export const searchItems=async (req,res) => {
     try {
         const {query,city}=req.query
@@ -139,6 +145,7 @@ export const searchItems=async (req,res) => {
         if(!shops){
             return res.status(400).json({message:"shops not found"})
         }
+        //searching functionality
         const shopIds=shops.map(s=>s._id)
         const items=await Item.find({
             shop:{$in:shopIds},

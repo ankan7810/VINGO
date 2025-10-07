@@ -5,6 +5,7 @@ import User from "../models/user.model.js"
 import { sendDeliveryOtpMail } from "../utils/mail.js"
 import RazorPay from "razorpay"
 import dotenv from "dotenv"
+import { count } from "console"
 
 dotenv.config()
 let instance = new RazorPay({
@@ -116,6 +117,7 @@ export const placeOrder = async (req, res) => {
     }
 }
 
+
 export const verifyPayment = async (req, res) => {
     try {
         const { razorpay_payment_id, orderId } = req.body
@@ -163,8 +165,6 @@ export const verifyPayment = async (req, res) => {
         return res.status(500).json({ message: `verify payment  error ${error}` })
     }
 }
-
-
 
 export const getMyOrders = async (req, res) => {
     try {
@@ -235,7 +235,6 @@ export const updateOrderStatus = async (req, res) => {
             const busyIds = await DeliveryAssignment.find({
                 assignedTo: { $in: nearByIds },
                 status: { $nin: ["brodcasted", "completed"] }
-
             }).distinct("assignedTo")
 
             const busyIdSet = new Set(busyIds.map(id => String(id)))
@@ -288,12 +287,7 @@ export const updateOrderStatus = async (req, res) => {
                 });
             }
 
-
-
-
-
         }
-
 
         await order.save()
         const updatedShopOrder = order.shopOrders.find(o => o.shop == shopId)
@@ -391,8 +385,7 @@ export const acceptOrder = async (req, res) => {
         let shopOrder = order.shopOrders.id(assignment.shopOrderId)
         shopOrder.assignedDeliveryBoy = req.userId
         await order.save()
-
-
+        // await order.populate('shopOrders.assignedDeliveryBoy')
         return res.status(200).json({
             message: 'order accepted'
         })
@@ -400,7 +393,6 @@ export const acceptOrder = async (req, res) => {
         return res.status(500).json({ message: `accept order error ${error}` })
     }
 }
-
 
 
 export const getCurrentOrder = async (req, res) => {
@@ -451,9 +443,8 @@ export const getCurrentOrder = async (req, res) => {
             customerLocation
         })
 
-
     } catch (error) {
-
+        
     }
 }
 
@@ -532,7 +523,50 @@ export const verifyDeliveryOtp = async (req, res) => {
     }
 }
 
+export const getTodayDeliveries=async (req,res) => {
+    try {
+        const deliveryBoyId=req.userId
+        const startsOfDay=new Date()
+        startsOfDay.setHours(0,0,0,0)
 
+        const orders=await Order.find({
+           "shopOrders.assignedDeliveryBoy":deliveryBoyId,
+           "shopOrders.status":"delivered",
+           "shopOrders.deliveredAt":{$gte:startsOfDay}
+        }).lean()
 
+     let todaysDeliveries=[] 
+     
+     orders.forEach(order=>{
+        order.shopOrders.forEach(shopOrder=>{
+            if(shopOrder.assignedDeliveryBoy==deliveryBoyId &&
+                shopOrder.status=="delivered" &&
+                shopOrder.deliveredAt &&
+                shopOrder.deliveredAt>=startsOfDay
+            ){
+                todaysDeliveries.push(shopOrder)
+            }
+        })
+     })
 
+let stats={}
 
+todaysDeliveries.forEach(shopOrder=>{
+    const hour=new Date(shopOrder.deliveredAt).getHours()
+    stats[hour]=(stats[hour] || 0) + 1
+})
+
+let formattedStats=Object.keys(stats).map(hour=>({
+ hour:parseInt(hour),
+ count:stats[hour]   
+}))
+
+formattedStats.sort((a,b)=>a.hour-b.hour)
+
+return res.status(200).json(formattedStats)
+  
+
+    } catch (error) {
+        return res.status(500).json({ message: `today deliveries error ${error}` }) 
+    }
+}

@@ -7,11 +7,13 @@ import { FaLocationDot } from "react-icons/fa6";
 import { FaUtensils } from "react-icons/fa";
 import FoodCard from '../components/FoodCard';
 import { FaArrowLeft } from "react-icons/fa";
+
 function Shop() {
     const {shopId}=useParams()
     const [items,setItems]=useState([])
     const [shop,setShop]=useState([])
     const navigate=useNavigate()
+
     const handleShop=async () => {
         try {
            const result=await axios.get(`${serverUrl}/api/item/get-by-shop/${shopId}`,{withCredentials:true}) 
@@ -28,7 +30,7 @@ handleShop()
   return (
     <div className='min-h-screen bg-gray-50'>
         <button className='absolute top-4 left-4 z-20 flex items-center gap-2 bg-black/50 hover:bg-black/70 text-white px-3 py-2 rounded-full shadow-md transition' onClick={()=>navigate("/")}>
-        <FaArrowLeft />
+        <FaArrowLeft className='cursor-pointer'/>
 <span>Back</span>
         </button>
       {shop && <div className='relative w-full h-64 md:h-80 lg:h-96'>

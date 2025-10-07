@@ -68,8 +68,7 @@ const orderSchema = new mongoose.Schema({
     },
     totalAmount: {
         type: Number
-    }
-    ,
+    },
     shopOrders: [shopOrderSchema],
     payment:{
         type:Boolean,

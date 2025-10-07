@@ -16,6 +16,7 @@ export const getCurrentUser=async (req,res) => {
     }
 }
 
+
 export const updateUserLocation=async (req,res) => {
     try {
         const {lat,lon}=req.body

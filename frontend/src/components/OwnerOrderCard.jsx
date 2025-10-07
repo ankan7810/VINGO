@@ -5,7 +5,7 @@ import { serverUrl } from '../App';
 import { useDispatch } from 'react-redux';
 import { updateOrderStatus } from '../redux/userSlice';
 import { useState } from 'react';
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 function OwnerOrderCard({ data }) {
     const [availableBoys,setAvailableBoys]=useState([])
 const dispatch=useDispatch()
@@ -19,8 +19,6 @@ const dispatch=useDispatch()
             console.log(error)
         }
     }
-
-
   
     return (
         <div className='bg-white rounded-lg shadow p-4 space-y-4'>
@@ -69,6 +67,10 @@ const dispatch=useDispatch()
      ))
    ):data.shopOrders.assignedDeliveryBoy?<div>{data.shopOrders.assignedDeliveryBoy.fullName}-{data.shopOrders.assignedDeliveryBoy.mobile}</div>:<div>Waiting for delivery boy to accept</div>}
 </div>}
+
+
+{/* very very important section for delivery boy's income */}
+
 
 <div className='text-right font-bold text-gray-800 text-sm'>
  Total: ₹{data.shopOrders.subtotal}

@@ -4,6 +4,7 @@ import home from "../assets/home.png"
 import "leaflet/dist/leaflet.css"
 import L from "leaflet"
 import { MapContainer, Marker, Polyline, Popup, TileLayer } from 'react-leaflet'
+
 const deliveryBoyIcon = new L.Icon({
     iconUrl: scooter,
     iconSize: [40, 40],
@@ -45,7 +46,6 @@ function DeliveryBoyTracking({ data }) {
               <Marker position={[customerLat,customerlon]} icon={customerIcon}>
              <Popup>Delivery Boy</Popup>
              </Marker>
-
 
 <Polyline positions={path} color='blue' weight={4}/>
 
