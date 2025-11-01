@@ -10,10 +10,6 @@ import { ClipLoader } from "react-spinners"
 import { useDispatch } from 'react-redux';
 import { setUserData } from '../redux/userSlice';
 import PasswordField from './PasswordField.jsx';
-
-// ✅ import PasswordField
-// import PasswordField from "/PasswordField.jsx";
-
 function SignUp() {
     const primaryColor = "#ff4d2d";
     const bgColor = "#fff9f6";
